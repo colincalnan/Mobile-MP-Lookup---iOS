@@ -1,0 +1,59 @@
+<!DOCTYPE html> 
+<html> 
+	<head> 
+	<title>MP Lookup</title> 
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+
+	<link rel="stylesheet" href="jquery.mobile-1.0b3.min.css" />
+	<script type="text/javascript" src="jquery-1.6.3.min.js"></script>
+	<script type="text/javascript" src="jquery.mobile-1.0b3.min.js"></script>
+  <script type="text/javascript">
+    $(function() {
+  		$('#submit').click(function(){
+          $.getJSON("http://howdtheyvote.ca/api.php?callback=?",{key:'HPMMFRXQPZ',call:'findmember',house_id:'1',format:'json',postal_code:$('#postal_code').val()},
+    				function(data) {
+    					var content;
+              content += '<li><h3 class="ui-li-heading">' + data['member'].name_first + ' ' + data['member'].name_last + '</h3></li>';
+              content += '<li><p class="ui-li-desc"><strong>' + data['member'].party + ' - ' + data['member'].riding_name + ', ' + data['member'].province + '</strong></p></li>';
+              content += '<li><p class="ui-li-desc"><a href="' + data['member'].website + '">' + data['member'].website + '</a></p></li>';
+              content += '<li><p class="ui-li-desc"><a href="mailto:' + data['member'].email + '">' + data['member'].email + '</a></p></li>';
+              content += '<li><p class="ui-li-desc">' + data['member'].phone + '</p></li>';
+              $('#results ul').html(content);
+              $('#results ul').listview('refresh');
+            }
+  			);
+      return false;
+		  });
+	 });
+  </script>
+</head> 
+
+<body> 
+  <!-- Start of first page -->
+  <div data-role="page" id="mp-lookup" data-theme="b">
+  
+  	<div data-role="header" data-theme="b">
+  		<h1>MP Lookup</h1>
+  	</div><!-- /header -->
+  
+  	<div data-role="content">	
+    	<form>
+    		<div data-role="fieldcontain">
+          <label for="postal_code">Postal Code</label>
+    		  <input type="text" name="postal_code" id="postal_code" placeholder="e.g V7M2B1" />
+        </div>
+    		<input type="submit" value="Go" id="submit">
+    	</form>
+      <div id="results">
+        <ul data-role="listview" data-theme="b">
+		    </ul>      
+      </div>
+  	</div><!-- /content -->
+  
+  	<div data-role="footer" data-theme="b">
+  		<h4>Code by Colin Calnan</h4>
+  	</div><!-- /footer -->
+  </div><!-- /page -->
+</body>
+</html>
